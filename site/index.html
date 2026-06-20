@@ -432,6 +432,79 @@
       overflow-x: auto;
     }
 
+    /* --- Deep Dive: How It Works --- */
+    .deep-dive { padding: 100px 0; }
+
+    .deep-card {
+      background: linear-gradient(145deg, rgba(10, 10, 25, 0.9), rgba(6, 6, 18, 0.9));
+      border: 1px solid rgba(6, 182, 212, 0.06);
+      border-radius: 18px;
+      padding: 40px 36px;
+      margin-bottom: 24px;
+      transition: border-color 0.3s;
+    }
+    .deep-card:hover { border-color: rgba(6, 182, 212, 0.12); }
+    .deep-card h3 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .deep-card h3 .badge {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 10px;
+      border-radius: 999px;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+    .deep-card h3 .badge.llm { background: rgba(6, 182, 212, 0.12); color: #22d3ee; }
+    .deep-card h3 .badge.nollm { background: rgba(234, 179, 8, 0.1); color: #eab308; }
+    .deep-card h3 .badge.opt { background: rgba(139, 92, 246, 0.1); color: #a78bfa; }
+    .deep-card p, .deep-card li { font-size: 14px; color: #64748b; line-height: 1.8; }
+    .deep-card ul { padding-left: 20px; }
+    .deep-card li { margin-bottom: 4px; }
+    .deep-card li strong { color: #94a3b8; }
+    .deep-card .cmd-example {
+      display: inline-block;
+      margin-top: 12px;
+      background: rgba(6, 182, 212, 0.04);
+      border: 1px solid rgba(6, 182, 212, 0.08);
+      border-radius: 8px;
+      padding: 8px 14px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: #5eead4;
+    }
+
+    .pipeline-flow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 24px 0;
+      padding: 20px;
+      background: rgba(6, 182, 212, 0.03);
+      border-radius: 12px;
+      border: 1px solid rgba(6, 182, 212, 0.06);
+    }
+    .pipeline-flow .step-box {
+      background: rgba(6, 182, 212, 0.06);
+      border: 1px solid rgba(6, 182, 212, 0.10);
+      border-radius: 10px;
+      padding: 10px 16px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #5eead4;
+      text-align: center;
+      min-width: 80px;
+    }
+    .pipeline-flow .step-box .sub { display: block; font-weight: 400; color: #64748b; font-size: 10px; margin-top: 2px; }
+    .pipeline-flow .arrow { color: #334155; font-size: 18px; }
+
     /* --- Modes Table --- */
     .modes { padding: 100px 0; }
 
@@ -463,6 +536,17 @@
     }
     .mode-item h3 { font-size: 16px; font-weight: 700; margin-bottom: 6px; color: #f1f5f9; }
     .mode-item p { font-size: 13px; color: #64748b; }
+    .mode-item .llm-req {
+      font-size: 11px;
+      font-weight: 600;
+      display: inline-block;
+      margin-top: 8px;
+      padding: 2px 8px;
+      border-radius: 999px;
+    }
+    .mode-item .llm-req.yes { background: rgba(6, 182, 212, 0.08); color: #22d3ee; }
+    .mode-item .llm-req.no { background: rgba(234, 179, 8, 0.08); color: #eab308; }
+    .mode-item .llm-req.opt { background: rgba(139, 92, 246, 0.08); color: #a78bfa; }
 
     /* --- CTA --- */
     .cta-section {
@@ -538,6 +622,7 @@
     </a>
     <div class="nav-links">
       <a href="#features">Features</a>
+      <a href="#how-it-works">How It Works</a>
       <a href="#quickstart">Quick Start</a>
       <a href="#modes">Modes</a>
       <a href="https://github.com/orewamash/morpheus" target="_blank">GitHub</a>
@@ -689,53 +774,168 @@
     </div>
   </section>
 
+  <!-- Deep Dive: How It Works -->
+  <section class="deep-dive" id="how-it-works">
+    <div class="container">
+      <div class="section-title reveal">
+        <h2>How <span class="grad-cyan">Morpheus</span> Works</h2>
+        <p>Understanding the architecture, data flow, and when an LLM is needed.</p>
+      </div>
+
+      <div class="deep-card reveal">
+        <h3>🔬 The Core Pipeline</h3>
+        <p>
+          Every Morpheus command follows the same fundamental pipeline. The only difference is
+          what happens at the final stage — some modes use an LLM, others use deterministic analysis.
+        </p>
+        <div class="pipeline-flow">
+          <span class="step-box">Your Python File<span class="sub">script.py</span></span>
+          <span class="arrow">→</span>
+          <span class="step-box">sys.settrace<span class="sub">captures events</span></span>
+          <span class="arrow">→</span>
+          <span class="step-box">Compressor<span class="sub">groups into chapters</span></span>
+          <span class="arrow">→</span>
+          <span class="step-box">Analysis Engine<span class="sub">LLM or deterministic</span></span>
+          <span class="arrow">→</span>
+          <span class="step-box">Output<span class="sub">narration / report / graph</span></span>
+        </div>
+        <p>
+          <strong>Step 1 — Tracing:</strong> Python's built-in <code style="color:#5eead4;">sys.settrace</code> fires an event
+          for every function call and return. Morpheus captures these into <code style="color:#5eead4;">TraceEvent</code> objects —
+          function name, filename, line number, local variables, timestamps. Stdlib and site-packages are filtered out automatically.
+        </p>
+        <p style="margin-top:8px;">
+          <strong>Step 2 — Compression:</strong> Raw events are grouped into <code style="color:#5eead4;">ExecutionChapter</code> objects.
+          Each chapter represents one function's execution — its entry, all calls it made, and its return.
+          This reduces hundreds of events into a handful of readable chapters.
+        </p>
+        <p style="margin-top:8px;">
+          <strong>Step 3 — Analysis:</strong> Depends on the mode you choose. Some modes feed chapters to an LLM for
+          natural language narration. Others run deterministic rules (pattern matching, statistics, ML models) directly.
+        </p>
+      </div>
+
+      <div class="deep-card reveal">
+        <h3>🤖 Why Do Some Modes Need an LLM?</h3>
+        <p>
+          An LLM (Large Language Model) is only needed when Morpheus needs to <strong>generate human language</strong>
+          from the execution data. The raw trace contains function names, line numbers, and variable values —
+          useful to a computer, but meaningless to a human reading it cold.
+        </p>
+        <p style="margin-top:12px;">
+          The LLM (like Mistral running via Ollama) converts:
+        </p>
+        <ul>
+          <li><strong>Raw trace:</strong> <code style="color:#334155;">call calculate -&gt; call add -&gt; return 7</code></li>
+          <li><strong>Narration:</strong> <q style="color:#94a3b8;">The <code style="color:#5eead4;">calculate</code> function was called with <code style="color:#5eead4;">a=3, b=4</code>. It called <code style="color:#5eead4;">add</code> which returned <code style="color:#5eead4;">7</code>.</q></li>
+        </ul>
+        <p style="margin-top:12px;">
+          Modes like <strong>prophecy</strong>, <strong>spy</strong>, <strong>diff</strong>, and <strong>map</strong>
+          do NOT need an LLM because they analyze the trace data with deterministic rules, pattern matching,
+          or statistical models — no language generation required.
+        </p>
+      </div>
+
+      <div class="deep-card reveal">
+        <h3>🌐 How Morpheus Connects to Ollama</h3>
+        <p>
+          When you install Ollama and pull Mistral, Ollama runs a local HTTP server at
+          <code style="color:#5eead4;">http://localhost:11434</code>. Morpheus sends POST requests to
+          <code style="color:#5eead4;">/api/generate</code> with the execution chapters as the prompt.
+        </p>
+        <div class="pipeline-flow" style="max-width:500px;margin:16px auto;">
+          <span class="step-box">Morpheus<span class="sub">chapters as prompt</span></span>
+          <span class="arrow">→</span>
+          <span class="step-box">POST /api/generate<span class="sub">localhost:11434</span></span>
+          <span class="arrow">→</span>
+          <span class="step-box">Mistral<span class="sub">runs on your GPU/CPU</span></span>
+          <span class="arrow">→</span>
+          <span class="step-box">Narration text<span class="sub">streamed back</span></span>
+        </div>
+        <p>
+          <strong>No data ever leaves your machine.</strong> Everything runs locally — the trace,
+          the compression, and the LLM inference. You can optionally use <strong>OpenRouter</strong>
+          (cloud) instead by passing <code style="color:#5eead4;">-b openrouter</code> and setting an API key.
+        </p>
+      </div>
+
+      <div class="deep-card reveal">
+        <h3>📦 What Gets Saved to the Database?</h3>
+        <p>
+          Every run is saved to <code style="color:#5eead4;">~/.morpheus/history.db</code> (SQLite).
+          Stored data includes:
+        </p>
+        <ul>
+          <li><strong>File path</strong> and <strong>mode</strong> used</li>
+          <li><strong>Event count</strong> and <strong>duration</strong> in milliseconds</li>
+          <li><strong>Chapters</strong> — the compressed execution structure</li>
+          <li><strong>Narrations</strong> — LLM output (if narration mode was used)</li>
+          <li><strong>Error</strong> — if the traced script crashed</li>
+        </ul>
+        <p style="margin-top:12px;">
+          Saved runs can be viewed with <code class="cmd-example" style="margin:0;">morpheus list-runs</code>,
+          analyzed with <code class="cmd-example" style="margin:0;">morpheus analyze &lt;run-id&gt;</code>,
+          or compared with <code class="cmd-example" style="margin:0;">morpheus diff &lt;id1&gt; &lt;id2&gt;</code>.
+        </p>
+      </div>
+    </div>
+  </section>
+
   <!-- Modes -->
   <section class="modes" id="modes">
     <div class="container">
       <div class="section-title reveal">
         <h2>Every <span class="grad-cyan">Mode</span> Explained</h2>
-        <p>Morpheus has a mode for every workflow.</p>
+        <p>Each mode is designed for a specific workflow. LLM-required modes need Ollama (or OpenRouter).</p>
       </div>
       <div class="modes-grid">
         <div class="mode-item reveal">
-          <div class="mode-label">run</div>
+          <div class="mode-label">morpheus run</div>
           <h3>Narrator</h3>
-          <p>LLM narrates each execution chapter in plain English</p>
+          <p>Traces a Python file and narrates every function call and return value in natural English via a local LLM.</p>
+          <span class="llm-req yes">Requires LLM</span>
         </div>
         <div class="mode-item reveal">
-          <div class="mode-label">run -m prophecy</div>
+          <div class="mode-label">morpheus run -m prophecy</div>
           <h3>Prophecy</h3>
-          <p>Detects rapid calls, missing returns, and execution warnings</p>
+          <p>Analyzes the trace for warning patterns — rapid repeated calls, missing return values, and anomalous execution patterns.</p>
+          <span class="llm-req no">No LLM needed</span>
         </div>
         <div class="mode-item reveal">
-          <div class="mode-label">run -m teach</div>
+          <div class="mode-label">morpheus run -m teach</div>
           <h3>Teach</h3>
-          <p>Interactive Q&A session about the code execution</p>
+          <p>Interactive Q&A session. The LLM generates questions about the code's execution to test your understanding.</p>
+          <span class="llm-req yes">Requires LLM</span>
         </div>
         <div class="mode-item reveal">
-          <div class="mode-label">run -m oracle</div>
+          <div class="mode-label">morpheus run -m oracle</div>
           <h3>Oracle</h3>
-          <p>Multi-language + personality-driven analysis</p>
+          <p>Multi-language support (Python, JS, C++, Java) with personality-driven analysis — mentor, critic, paranoid, or teacher.</p>
+          <span class="llm-req yes">Requires LLM</span>
         </div>
         <div class="mode-item reveal">
-          <div class="mode-label">spy</div>
+          <div class="mode-label">morpheus spy</div>
           <h3>Spy</h3>
-          <p>Security scan unknown scripts for dangerous behavior</p>
+          <p>Security-scan unknown scripts for dangerous behavior — file I/O, network connections, system command execution.</p>
+          <span class="llm-req no">No LLM needed</span>
         </div>
         <div class="mode-item reveal">
-          <div class="mode-label">map</div>
+          <div class="mode-label">morpheus map</div>
           <h3>Mind Map</h3>
-          <p>Interactive execution graph visualization dashboard</p>
+          <p>Builds an interactive execution graph and launches a React dashboard for visual exploration.</p>
+          <span class="llm-req no">No LLM needed</span>
         </div>
         <div class="mode-item reveal">
-          <div class="mode-label">analyze</div>
+          <div class="mode-label">morpheus analyze</div>
           <h3>ML Analyze</h3>
-          <p>Full ML pipeline on saved runs — anomalies, degradation, profiles</p>
+          <p>Full ML pipeline on saved runs: concept classification, graph features, performance degradation, and function profiling.</p>
+          <span class="llm-req no">No LLM needed</span>
         </div>
         <div class="mode-item reveal">
-          <div class="mode-label">diff</div>
+          <div class="mode-label">morpheus diff</div>
           <h3>Time Diff</h3>
-          <p>Compare two runs and see where execution diverged</p>
+          <p>Compares two runs and shows exactly where execution diverged — added, removed, or changed chapters.</p>
+          <span class="llm-req no">No LLM needed</span>
         </div>
       </div>
     </div>
