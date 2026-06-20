@@ -6,7 +6,7 @@ build-backend = "hatchling.build"
 name = "morpheus-cli"
 version = "0.1.0"
 description = "A self-evolving execution intelligence system. Every other tool reads what your code says. Morpheus remembers what your code did."
-readme = "README.md"
+readme = { file = "README.md", content-type = "text/markdown" }
 license = { file = "LICENSE" }
 requires-python = ">=3.11"
 authors = [

@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Morpheus — Execution Intelligence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #07070d;
+      color: #e0e0f0;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .bg-glow {
+      position: fixed;
+      top: -40vh;
+      left: -20vw;
+      width: 80vw;
+      height: 80vh;
+      background: radial-gradient(circle at 30% 40%, rgba(100, 40, 255, 0.12), transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* --- Hero --- */
+    .hero {
+      padding: 120px 0 80px;
+      text-align: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(100, 40, 255, 0.12);
+      border: 1px solid rgba(100, 40, 255, 0.25);
+      border-radius: 999px;
+      padding: 6px 16px;
+      font-size: 13px;
+      color: #a78bfa;
+      font-weight: 500;
+      margin-bottom: 32px;
+    }
+    .hero-badge .dot { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; display: inline-block; }
+    .hero-badge a { color: #c4b5fd; text-decoration: none; }
+    .hero-badge a:hover { text-decoration: underline; }
+
+    .hero h1 {
+      font-size: clamp(44px, 8vw, 80px);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+      margin-bottom: 20px;
+    }
+    .hero h1 .gradient {
+      background: linear-gradient(135deg, #a78bfa, #6366f1, #8b5cf6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      font-size: 18px;
+      color: #9494b0;
+      max-width: 600px;
+      margin: 0 auto 40px;
+    }
+
+    .install-box {
+      display: inline-flex;
+      align-items: center;
+      gap: 0;
+      background: #12121e;
+      border: 1px solid #2a2a3e;
+      border-radius: 12px;
+      overflow: hidden;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 15px;
+    }
+    .install-box .prompt { padding: 14px 0 14px 18px; color: #6366f1; user-select: none; }
+    .install-box .cmd { padding: 14px 8px; color: #e0e0f0; white-space: nowrap; }
+    .install-box .copy-btn {
+      background: #6366f1;
+      border: none;
+      color: #fff;
+      padding: 14px 20px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+    .install-box .copy-btn:hover { background: #4f46e5; }
+    .install-box .copy-btn.copied { background: #22c55e; }
+
+    .badge-row {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 32px;
+    }
+    .badge-row a {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: #12121e;
+      border: 1px solid #2a2a3e;
+      border-radius: 8px;
+      color: #9494b0;
+      text-decoration: none;
+      font-size: 13px;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .badge-row a:hover { border-color: #6366f1; color: #e0e0f0; }
+
+    /* --- Features --- */
+    .features { padding: 80px 0; }
+    .features h2 {
+      text-align: center;
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 48px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    .card {
+      background: #0d0d1a;
+      border: 1px solid #1e1e32;
+      border-radius: 16px;
+      padding: 28px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .card:hover { border-color: #6366f1; transform: translateY(-2px); }
+    .card .icon { font-size: 28px; margin-bottom: 12px; }
+    .card h3 { font-size: 17px; font-weight: 600; margin-bottom: 8px; }
+    .card p { font-size: 14px; color: #9494b0; }
+
+    /* --- Quick Start --- */
+    .quickstart { padding: 80px 0; }
+    .quickstart h2 {
+      text-align: center;
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 48px;
+    }
+    .step {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      margin-bottom: 28px;
+    }
+    .step-num {
+      flex-shrink: 0;
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: rgba(100, 40, 255, 0.15);
+      color: #a78bfa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 16px;
+    }
+    .step-content { flex: 1; padding-top: 6px; }
+    .step-content h3 { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+    .step-content p { font-size: 14px; color: #9494b0; margin-bottom: 8px; }
+    .code-snip {
+      display: inline-block;
+      background: #12121e;
+      border: 1px solid #2a2a3e;
+      border-radius: 8px;
+      padding: 10px 16px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: #c4b5fd;
+    }
+
+    /* --- CTA --- */
+    .cta {
+      text-align: center;
+      padding: 80px 0 120px;
+    }
+    .cta h2 { font-size: 28px; font-weight: 700; margin-bottom: 12px; }
+    .cta p { color: #9494b0; margin-bottom: 28px; }
+
+    /* --- Footer --- */
+    footer {
+      text-align: center;
+      padding: 40px 0;
+      font-size: 13px;
+      color: #555;
+      border-top: 1px solid #1a1a2e;
+    }
+    footer a { color: #6366f1; text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    @media (max-width: 640px) {
+      .hero { padding: 80px 0 40px; }
+      .install-box { font-size: 13px; }
+      .install-box .cmd { padding: 12px 6px; }
+      .install-box .copy-btn { padding: 12px 14px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-glow"></div>
+
+  <section class="hero">
+    <div class="container">
+      <div class="hero-badge">
+        <span class="dot"></span>
+        v0.1.0 &middot; MIT License &middot;
+        <a href="https://github.com/madhesh-y/morpheus">GitHub</a>
+      </div>
+
+      <h1>
+        Your code ran.<br>
+        <span class="gradient">Morpheus remembers.</span>
+      </h1>
+
+      <p>
+        Every other tool reads what your code says. Morpheus traces what your code <em>did</em>
+        &mdash; every call, return, and variable &mdash; then narrates it back in plain English.
+      </p>
+
+      <div class="install-box">
+        <span class="prompt">$</span>
+        <span class="cmd">pip install morpheus-cli</span>
+        <button class="copy-btn" onclick="copyInstall(this)">Copy</button>
+      </div>
+
+      <div class="badge-row">
+        <a href="#quickstart">Quick Start</a>
+        <a href="https://github.com/madhesh-y/morpheus">GitHub</a>
+        <a href="https://github.com/madhesh-y/morpheus/issues">Report Bug</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="features">
+    <div class="container">
+      <h2>What Morpheus Does</h2>
+      <div class="grid">
+        <div class="card">
+          <div class="icon">🔍</div>
+          <h3>Execution Tracing</h3>
+          <p>Captures every function call, return value, and variable with sys.settrace &mdash; no code modification needed.</p>
+        </div>
+        <div class="card">
+          <div class="icon">📖</div>
+          <h3>AI Narration</h3>
+          <p>Uses a local Ollama LLM (or cloud OpenRouter) to narrate execution flow in natural English.</p>
+        </div>
+        <div class="card">
+          <div class="icon">⚠️</div>
+          <h3>Prophecy Mode</h3>
+          <p>Detects rapid repeated calls, missing return values, and other execution warnings before they become bugs.</p>
+        </div>
+        <div class="card">
+          <div class="icon">🔒</div>
+          <h3>Spy Mode</h3>
+          <p>Security-scan unknown scripts for dangerous behavior &mdash; file access, network calls, system commands.</p>
+        </div>
+        <div class="card">
+          <div class="icon">🧠</div>
+          <h3>Oracle Mode</h3>
+          <p>Multi-language support (Python, JS, C++, Java) with personality-driven analysis: mentor, critic, paranoid, teacher.</p>
+        </div>
+        <div class="card">
+          <div class="icon">📊</div>
+          <h3>ML Pipeline</h3>
+          <p>Anomaly detection, crash prediction, execution fingerprints, performance degradation tracking, and GAT models.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="quickstart" id="quickstart">
+    <div class="container">
+      <h2>Get Started in 30 Seconds</h2>
+
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <h3>Install Morpheus</h3>
+          <p>Requires Python 3.11+ and Ollama (free, local LLM).</p>
+          <div class="code-snip">pip install morpheus-cli</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <h3>Install &amp; start Ollama</h3>
+          <p>Download from <a href="https://ollama.com" style="color:#a78bfa;">ollama.com</a>, then pull a model.</p>
+          <div class="code-snip">ollama pull mistral</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <h3>Trace any Python file</h3>
+          <p>Morpheus runs your script, captures every event, and narrates it.</p>
+          <div class="code-snip">morpheus run examples/simple.py</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <h3>Explore more modes</h3>
+          <p>Security scan, crash prediction, teaching mode, and interactive mind maps.</p>
+          <div class="code-snip">morpheus spy script.py &nbsp;// morpheus run script.py -m prophecy</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="container">
+      <h2>Ready to see what your code really did?</h2>
+      <p>Open source &middot; MIT licensed &middot; Runs 100% locally</p>
+      <div class="install-box" style="margin: 0 auto;">
+        <span class="prompt">$</span>
+        <span class="cmd">pip install morpheus-cli</span>
+        <button class="copy-btn" onclick="copyInstall(this)">Copy</button>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <p>Built by <a href="https://github.com/madhesh-y">Madhesh Y</a> &middot; <a href="https://github.com/madhesh-y/morpheus">GitHub</a> &middot; <a href="https://github.com/madhesh-y/morpheus/issues">Issues</a></p>
+    </div>
+  </footer>
+
+  <script>
+    function copyInstall(btn) {
+      const text = 'pip install morpheus-cli';
+      navigator.clipboard.writeText(text).then(() => {
+        btn.textContent = 'Copied!';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = 'Copy';
+          btn.classList.remove('copied');
+        }, 2000);
+      });
+    }
+  </script>
+</body>
+</html>

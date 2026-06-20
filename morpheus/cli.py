@@ -1133,10 +1133,143 @@ def config(
     if show:
         console.print(format_config(cfg))
 
+# ---------------------------------------------------------------------------
+#  help  —  Comprehensive usage guide
+# ---------------------------------------------------------------------------
+
+
+@app.command()
+def help() -> None:
+    """
+    Show a comprehensive usage guide with examples for every command.
+    """
+    guide = """
+[bold purple]Morpheus — Usage Guide[/bold purple]
+
+[bold yellow]ESSENTIAL COMMANDS[/bold yellow]
+
+  [bold cyan]morpheus run <file>[/bold cyan]
+    Trace and narrate any Python file's execution in plain English.
+    [dim]Examples:[/dim]
+      morpheus run examples/simple.py
+      morpheus run examples/simple.py -m prophecy
+      morpheus run examples/simple.py -m teach
+      morpheus run examples/simple.py -m oracle -p critic
+      morpheus run examples/simple.py -b openrouter
+      morpheus run examples/simple.py --json
+      morpheus run script.py -v --model llama3
+
+  [bold cyan]morpheus spy <file>[/bold cyan]
+    Security scan an unknown script for suspicious behavior (file access,
+    network calls, system commands).
+    [dim]Examples:[/dim]
+      morpheus spy examples/malware_sim.py
+      morpheus spy examples/safe_script.py -o report.txt
+
+  [bold cyan]morpheus analyze <run-id>[/bold cyan]
+    Run the full ML pipeline on a saved run: concept classification,
+    execution graph metrics, performance degradation, function profiling.
+    [dim]Example:[/dim]
+      morpheus analyze abc123
+
+  [bold cyan]morpheus diff <log1> <log2>[/bold cyan]
+    Time-travel diff — compare two runs and see where execution diverged.
+    [dim]Examples:[/dim]
+      morpheus diff abc123 def456
+      morpheus diff run1.json run2.json
+
+[bold yellow]VISUALIZATION[/bold yellow]
+
+  [bold cyan]morpheus map <file>[/bold cyan]
+    Build an interactive execution mind map and open the dashboard.
+    [dim]Examples:[/dim]
+      morpheus map examples/simple.py
+      morpheus map examples/ml_train.py --browser
+      morpheus map examples/simple.py --port 5000
+
+[bold yellow]MANAGEMENT[/bold yellow]
+
+  [bold cyan]morpheus list-runs[/bold cyan]
+    List recent execution runs from the database.
+    [dim]Examples:[/dim]
+      morpheus list-runs
+      morpheus list-runs -l 50
+      morpheus list-runs -m oracle
+
+  [bold cyan]morpheus get <run-id>[/bold cyan]
+    Get full details of a specific run.
+
+  [bold cyan]morpheus delete <run-id> -f[/bold cyan]
+    Delete a run record from the database.
+
+  [bold cyan]morpheus config --show[/bold cyan]
+    View or change configuration settings.
+    [dim]Examples:[/dim]
+      morpheus config --show
+      morpheus config --set ollama_model=llama3
+      morpheus config --set llm_backend=openrouter
+
+  [bold cyan]morpheus version[/bold cyan]
+    Show the installed Morpheus version and Python version.
+
+[bold yellow]MODES (for 'morpheus run')[/bold yellow]
+
+  [bold]narrator[/bold]   (default) LLM narrates each execution chapter
+  [bold]prophecy[/bold]   Detects warnings like rapid calls, missing returns
+  [bold]teach[/bold]      Interactive Q&A session about the code execution
+  [bold]oracle[/bold]     Multi-language + personality analysis
+
+[bold yellow]ORACLE PERSONALITIES[/bold yellow]
+
+  [bold]mentor[/bold]     Supportive, teaching-focused explanations
+  [bold]critic[/bold]     Focused on code smells and improvements
+  [bold]paranoid[/bold]   Security and edge-case obsessed
+  [bold]teacher[/bold]    Socratic-style with thought-provoking questions
+
+[bold yellow]LLM BACKENDS[/bold yellow]
+
+  [bold]ollama[/bold]      Local (free, default) — requires Ollama running
+  [bold]openrouter[/bold]  Cloud — requires OPENROUTER_API_KEY env var
+  [bold]auto[/bold]        Try ollama first, fallback to openrouter
+
+  Set backend priority with: morpheus config --set llm_backend=openrouter,ollama
+  Or via env var: MORPHEUS_LLM_BACKEND=openrouter,ollama
+
+[bold yellow]ENVIRONMENT VARIABLES[/bold yellow]
+
+  Create a .env file in the project root (or set these in your shell):
+    MORPHEUS_LLM_BACKEND=ollama,openrouter
+    MORPHEUS_OLLAMA_URL=http://localhost:11434
+    MORPHEUS_OLLAMA_MODEL=mistral
+    OPENROUTER_API_KEY=sk-or-v1-...
+    MORPHEUS_DB_PATH=~/.morpheus/history.db
+    MORPHEUS_LOG_LEVEL=INFO
+
+[bold yellow]DEVELOPMENT[/bold yellow]
+
+  [bold]Format code:[/bold]     black morpheus/
+  [bold]Lint code:[/bold]       ruff check morpheus/
+  [bold]Type check:[/bold]     mypy morpheus/
+  [bold]Run tests:[/bold]      pytest tests/ -v
+  [bold]Test coverage:[/bold]  pytest tests/ --cov=morpheus --cov-report=term-missing
+  [bold]Dashboard API:[/bold]  cd api && uvicorn server:app --reload --port 4000
+  [bold]React UI:[/bold]       cd dashboard && npm install && npm run dev
+
+[bold yellow]QUICK START[/bold yellow]
+
+  1. Ensure Ollama is running:     curl http://localhost:11434
+  2. Pull a model:                  ollama pull mistral
+  3. Trace a file:                  morpheus run examples/simple.py
+  4. Scan for security issues:      morpheus spy examples/malware_sim.py
+  5. View saved runs:               morpheus list-runs
+"""
+    console.print(guide)
+
 
 # ---------------------------------------------------------------------------
 #  Entry point
 # ---------------------------------------------------------------------------
+
 
 if __name__ == "__main__":
     app()
