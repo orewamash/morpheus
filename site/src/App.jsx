@@ -4,6 +4,7 @@ import Hero from "./components/Hero"
 import Features from "./components/Features"
 import HowItWorks from "./components/HowItWorks"
 import Modes from "./components/Modes"
+import OllamaSetup from "./components/OllamaSetup"
 import QuickStart from "./components/QuickStart"
 import CtaSection from "./components/CtaSection"
 import Footer from "./components/Footer"
@@ -47,6 +48,7 @@ export default function App() {
         <Features />
         <HowItWorks />
         <Modes />
+        <OllamaSetup />
         <QuickStart />
         <CtaSection onGetStarted={scrollToQuickStart} />
       </main>

@@ -19,7 +19,7 @@ export default function Navbar({ onGetStarted }) {
           <span className="text-white font-semibold text-lg tracking-tight">Morpheus</span>
         </a>
         <div className="hidden md:flex items-center gap-8">
-          {["Features", "How It Works", "Modes", "Quick Start"].map(item => (
+          {["Features", "How It Works", "Modes", "LLM Setup", "Quick Start"].map(item => (
             <a key={item} href={`#${item.toLowerCase().replace(/\s+/g, "-")}`} className="text-sm text-[var(--color-text-secondary)] hover:text-white transition-colors">
               {item}
             </a>
