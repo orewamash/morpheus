@@ -3,7 +3,7 @@
 **Author:** Madhesh Y  
 **Purpose:** Full technical spec for Oracle mode — the multi-language execution engine with personality narration.  
 **Read this before:** Touching oracle.py or any language bridge code  
-**Read after:** ARCHITECTURE.md (you need to understand TraceEvent first)
+**Read after:** docs/ARCHITECTURE.md (you need to understand TraceEvent first)
 
 ---
 
@@ -51,7 +51,7 @@ Oracle detects language from file extension. This is simple and reliable.
 | `.c` | C | GDB Python API |
 | `.cpp` `.cc` | C++ | GDB Python API |
 
-**Implementation:** See `detect_language()` in ARCHITECTURE.md → oracle.py section.
+**Implementation:** See `detect_language()` in docs/ARCHITECTURE.md → oracle.py section.
 
 **Priority order for implementation:**
 1. JavaScript first — largest vibe coder audience
@@ -627,4 +627,4 @@ Then runs the compiled `.js` file through the V8 bridge.
 ---
 
 *ORACLE.md — Created by Madhesh Y*  
-*Read ARCHITECTURE.md first. This file extends oracle.py as defined there.*
+*Read docs/ARCHITECTURE.md first. This file extends oracle.py as defined there.*

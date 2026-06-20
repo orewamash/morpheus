@@ -152,7 +152,7 @@ As tests are written, this command must pass with 0 failures before any code is 
 
 ## PROJECT STRUCTURE
 
-This is the exact folder and file structure to create. Do not deviate from this structure. Every file has a specific purpose defined in ARCHITECTURE.md.
+This is the exact folder and file structure. Do not deviate from this structure. Every file has a specific purpose defined in docs/ARCHITECTURE.md.
 
 ```
 morpheus/                          ← Git repository root
@@ -488,4 +488,4 @@ Never commit with failing tests.
 
 ---
 
-*Read ARCHITECTURE.md next — it defines exactly what functions to write inside each file.*
+*Read docs/ARCHITECTURE.md next — it defines exactly what functions to write inside each file.*

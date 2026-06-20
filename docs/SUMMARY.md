@@ -2,7 +2,7 @@
 ### Everything You Need to Know in One Read
 **For:** New team members, contributors, collaborators  
 **Read time:** 15–20 minutes  
-**After reading this:** Read `PROJECT.md` for the complete technical deep-dive
+**After reading this:** Read `docs/PROJECT.md` for the complete technical deep-dive
 
 ---
 
@@ -282,7 +282,7 @@ No. Oracle mode supports 40+ languages via tree-sitter. Python is just the first
 No. That is the loudest early audience. The real market is every developer who runs code and wants to understand it, predict problems, or audit behavior.
 
 **Q: What should I read first?**
-This file first. Then `PROJECT.md` for the complete technical details. Then `TASKS.md` for your assigned work.
+This file first. Then `docs/PROJECT.md` for the complete technical details. Then `docs/TASKS.md` for your assigned work.
 
 ---
 
@@ -301,8 +301,8 @@ Not a tool. A self-evolving execution intelligence system. A permanent guardian 
 
 *This is Morpheus. Welcome to the team.*
 
-*For the complete technical spec, read `PROJECT.md`.*  
-*For your current tasks, read `TASKS.md`.*  
+*For the complete technical spec, read `docs/PROJECT.md`.*  
+*For your current tasks, read `docs/TASKS.md`.*  
 *Questions? Raise a GitHub issue or ping the project lead.*
 
 ---

@@ -8,7 +8,7 @@
 
 ## HOW TO USE THIS FILE
 
-1. Read `SUMMARY.md` first if you are new.
+1. Read `docs/SUMMARY.md` first if you are new.
 2. Find your name in the current sprint below.
 3. Pick the first task with status `[ ]` assigned to you.
 4. When you start — change `[ ]` to `[~]`

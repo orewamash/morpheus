@@ -2,16 +2,16 @@
 ### How to Contribute to Morpheus
 **For:** All team members, collaborators, and external contributors  
 **Read time:** 10 minutes  
-**Read after:** SUMMARY.md, SETUP.md, ARCHITECTURE.md
+**Read after:** docs/SUMMARY.md, docs/SETUP.md, docs/ARCHITECTURE.md
 
 ---
 
 ## BEFORE YOU WRITE ANY CODE
 
-1. Read `SUMMARY.md` — understand what Morpheus is and why it exists
-2. Read `SETUP.md` — set up your environment and verify it works
-3. Read `ARCHITECTURE.md` — understand the module you are building
-4. Read `TASKS.md` — find the task assigned to you
+1. Read `docs/SUMMARY.md` — understand what Morpheus is and why it exists
+2. Read `docs/SETUP.md` — set up your environment and verify it works
+3. Read `docs/ARCHITECTURE.md` — understand the module you are building
+4. Read `docs/TASKS.md` — find the task assigned to you
 5. Create a branch for your task (see Git Workflow below)
 6. Only then start writing code
 
@@ -23,7 +23,7 @@
 
 1. Open `TASKS.md`
 2. Find a task with status `[ ]` and no owner other than yours
-3. Change `[ ]` to `[~]` in TASKS.md
+3. Change `[ ]` to `[~]` in docs/TASKS.md
 4. Commit that change: `git commit -m "docs: claim task — cli.py skeleton"`
 5. If a task has no owner listed, ask Madhesh Y before claiming it
 
@@ -88,7 +88,7 @@ Every commit message must follow this exact format:
 feat: add sys.settrace integration to tracer.py
 fix: handle ConnectionError when Ollama is offline
 test: add 3 tests for compressor chapter grouping
-docs: update TASKS.md with Week 2 progress
+docs: update docs/TASKS.md with Week 2 progress
 refactor: split narrate_chapter into build_prompt and send_to_ollama
 ```
 
@@ -276,7 +276,7 @@ List the test functions added and what they verify.
 - [ ] black passes
 - [ ] ruff passes  
 - [ ] pytest passes
-- [ ] TASKS.md updated (task marked [x])
+- [ ] docs/TASKS.md updated (task marked [x])
 - [ ] No hardcoded paths or model names
 - [ ] Type hints on all new functions
 - [ ] Docstrings on all public functions
@@ -299,7 +299,7 @@ A task is blocked when you cannot make progress for more than 24 hours due to so
 
 ### Step 1 — Mark it blocked
 
-In TASKS.md, change `[~]` to `[!]` and add a note:
+In docs/TASKS.md, change `[~]` to `[!]` and add a note:
 ```
 BLOCKED: Cannot figure out how V8 Inspector WebSocket connection works
 NEEDS: Example of V8 Protocol message flow or working code sample
@@ -319,7 +319,7 @@ In the body:
 
 ### Step 3 — Pick up another task
 
-Do not sit idle. Look at TASKS.md for any other task with `[ ]` status that is not blocked. Pick it up while waiting to be unblocked.
+Do not sit idle. Look at docs/TASKS.md for any other task with `[ ]` status that is not blocked. Pick it up while waiting to be unblocked.
 
 ---
 
@@ -327,7 +327,7 @@ Do not sit idle. Look at TASKS.md for any other task with `[ ]` status that is n
 
 These are the most common mistakes. Read them before you start.
 
-**Do not rename functions from ARCHITECTURE.md**
+**Do not rename functions from docs/ARCHITECTURE.md**
 `cli.py` calls `trace_file()`. If you name your function `run_tracer()` instead, the whole chain breaks.
 
 **Do not add dependencies not in pyproject.toml**
@@ -350,7 +350,7 @@ If a function fails, raise a specific exception with a clear message. Do not cat
 ## ASKING FOR HELP
 
 Before asking for help:
-1. Read the relevant section in ARCHITECTURE.md again
+1. Read the relevant section in docs/ARCHITECTURE.md again
 2. Search GitHub Issues for similar problems
 3. Try for at least 30 minutes on your own
 

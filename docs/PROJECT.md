@@ -618,46 +618,98 @@ morpheus/                          ← Root repo (GitHub)
 ├── CONTRIBUTING.md                ← How others contribute to the project
 ├── LICENSE                        ← MIT license
 ├── pyproject.toml                 ← pip package configuration
+├── .gitignore
+├── .env.template                  ← Environment variable template
 │
-├── docs/                          ← Team planning and specification files
+├── .github/                       ← GitHub configuration
+│   ├── FUNDING.yml                ← GitHub Sponsors config
+│   └── workflows/
+│       ├── ci.yml                 ← CI: lint + test on push
+│       └── publish.yml            ← Auto-publish to PyPI on tags
+│
+├── docs/                          ← All planning and technical documentation
+│   ├── README.md                  ← Documentation index
 │   ├── PROJECT.md                 ← This file — the complete project bible
+│   ├── SUMMARY.md                 ← Onboarding guide
+│   ├── SETUP.md                   ← Environment setup instructions
+│   ├── ARCHITECTURE.md            ← Code blueprint — function signatures
 │   ├── TASKS.md                   ← Sprint board — who does what, current week
 │   ├── FRONTEND.md                ← Dashboard UI specs for the React developer
-│   └── ORACLE.md                  ← Full Oracle mode specification
+│   ├── ORACLE.md                  ← Full Oracle mode specification
+│   └── EVOLUTION.md               ← ML architecture specification
 │
 ├── morpheus/                      ← Main Python package
-│   ├── __init__.py
+│   ├── __init__.py                ← Version string
 │   ├── cli.py                     ← All terminal commands (Typer)
 │   ├── tracer.py                  ← sys.settrace engine — the core watcher
 │   ├── compressor.py              ← Converts raw trace events into readable chapters
-│   ├── narrator.py                ← Sends chapters to Ollama, streams narration back
+│   ├── narrator.py                ← Multi-provider LLM narration engine
 │   ├── oracle.py                  ← Tree-sitter multi-language engine
 │   ├── prophecy.py                ← Crash prediction and pattern detection
 │   ├── spy.py                     ← Security scanner mode
 │   ├── teacher.py                 ← Interactive teaching mode
-│   ├── ml/
-│   │   ├── anomaly.py             ← Isolation Forest — execution anomaly detection
-│   │   ├── predictor.py           ← Random Forest — crash prediction
-│   │   ├── profiler.py            ← Personal coding pattern profiler
-│   │   ├── concept_writer.py      ← NLP — auto-generate concept docs from execution
-│   │   └── fingerprint.py         ← Codebase DNA — execution embedding similarity
-│   └── storage.py                 ← SQLite run history storage
+│   ├── storage.py                 ← SQLite run history storage
+│   ├── config.py                  ← Configuration management
+│   ├── differ.py                  ← Time Travel diff engine
+│   └── ml/
+│       ├── __init__.py
+│       ├── anomaly.py             ← Isolation Forest — execution anomaly detection
+│       ├── predictor.py           ← Random Forest — crash prediction
+│       ├── profiler.py            ← HDBSCAN user profiler
+│       ├── concept_writer.py      ← Behavioral concept inference from execution
+│       ├── fingerprint.py         ← Codebase DNA — execution embedding similarity
+│       ├── execution_graph.py     ← networkx DiGraph builder + features
+│       ├── gat_model.py           ← GAT model + MemoryBank
+│       ├── degradation.py         ← Performance degradation analysis
+│       └── static_analyzer.py     ← Tree-sitter static code analysis
 │
 ├── dashboard/                     ← React web UI (optional visual layer)
-│   ├── src/
-│   │   ├── App.jsx
-│   │   ├── MindMap.jsx            ← D3.js force graph component
-│   │   ├── RunHistory.jsx         ← List of all past runs with narration logs
-│   │   └── SpyReport.jsx          ← Security scan report viewer
-│   └── package.json
+│   ├── index.html
+│   ├── package.json
+│   ├── vite.config.js
+│   └── src/
+│       ├── main.jsx
+│       ├── App.jsx
+│       ├── MindMap.jsx            ← D3.js force graph component
+│       ├── RunHistory.jsx         ← List of all past runs with narration logs
+│       └── SpyReport.jsx          ← Security scan report viewer
 │
 ├── api/                           ← FastAPI backend serving the dashboard
-│   └── server.py
+│   ├── __init__.py
+│   ├── server.py
+│   └── routes/
+│       └── __init__.py            ← 6 REST endpoints
 │
-└── tests/                         ← Tests for Morpheus itself
+├── examples/                      ← Test scripts for development
+│   ├── simple.py
+│   ├── simple.js
+│   ├── simple.c
+│   ├── ml_train.py
+│   ├── will_crash.py
+│   ├── safe_script.py
+│   └── malware_sim.py
+│
+└── tests/                         ← 193 pytest tests
+    ├── conftest.py
     ├── test_tracer.py
+    ├── test_compressor.py
     ├── test_narrator.py
-    └── test_oracle.py
+    ├── test_storage.py
+    ├── test_prophecy.py
+    ├── test_spy.py
+    ├── test_teacher.py
+    ├── test_oracle.py
+    ├── test_cli.py
+    ├── test_differ.py
+    ├── test_integration.py
+    ├── test_ml.py
+    ├── test_mock_llm.py
+    ├── test_concept_writer.py
+    ├── test_degradation.py
+    ├── test_execution_graph.py
+    ├── test_gat_model.py
+    ├── test_profiler.py
+    └── test_static_analyzer.py
 ```
 
 ---

@@ -11,9 +11,9 @@
 
 # 1. Why This Document Exists
 
-PROJECT.md defines what Morpheus is.
+docs/PROJECT.md defines what Morpheus is.
 
-SUMMARY.md explains Morpheus to new contributors.
+docs/SUMMARY.md explains Morpheus to new contributors.
 
 This document answers a different question:
 

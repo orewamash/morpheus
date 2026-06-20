@@ -65,26 +65,30 @@ pytest tests/ -v    # 102 tests
 
 ```
 morpheus/
-├── tracer.py        — TraceEvent + MorpheusTracer + trace_file()
-├── compressor.py    — ExecutionChapter + compress_trace()
-├── narrator.py      — OllamaClient + stream_narration()
-├── cli.py           — Typer CLI (run/spy/map/diff)
-├── differ.py        — Time Travel diff
-├── storage.py       — SQLite run history
-├── prophecy.py      — Warning pattern detectors
-├── spy.py           — Security scanner
-├── teacher.py       — Interactive teaching
-├── oracle.py        — Multi-language + personality engine
+├── tracer.py           — TraceEvent + MorpheusTracer + trace_file()
+├── compressor.py       — ExecutionChapter + compress_trace()
+├── narrator.py         — OllamaClient + stream_narration()
+├── cli.py              — Typer CLI (run/spy/map/diff)
+├── config.py           — Configuration management
+├── differ.py           — Time Travel diff
+├── storage.py          — SQLite run history
+├── prophecy.py         — Warning pattern detectors
+├── spy.py              — Security scanner
+├── teacher.py          — Interactive teaching
+├── oracle.py           — Multi-language + personality engine
 └── ml/
-    ├── anomaly.py       — Isolation Forest anomaly detection
-    ├── predictor.py     — RandomForest crash prediction
-    ├── profiler.py      — Per-function execution profiling
-    ├── concept_writer.py — Behavioral concept inference
-    ├── fingerprint.py   — Execution fingerprinting + comparison
-    ├── execution_graph.py — networkx DiGraph builder + features
-    └── gat_model.py      — GAT model + MemoryBank
+    ├── anomaly.py          — Isolation Forest anomaly detection
+    ├── predictor.py        — RandomForest crash prediction
+    ├── profiler.py         — Per-function execution profiling
+    ├── concept_writer.py   — Behavioral concept inference
+    ├── fingerprint.py      — Execution fingerprinting + comparison
+    ├── execution_graph.py  — networkx DiGraph builder + features
+    ├── gat_model.py        — GAT model + MemoryBank
+    ├── degradation.py      — Performance degradation analysis
+    └── static_analyzer.py  — Tree-sitter static code analysis
 api/
-├── server.py         — FastAPI entry point (port 4000)
-└── routes/__init__.py — 6 REST endpoints
-dashboard/             — Vite + React SPA
+├── server.py           — FastAPI entry point (port 4000)
+└── routes/__init__.py  — 6 REST endpoints
+dashboard/              — Vite + React SPA
+docs/                   — All planning & technical documentation
 ```
