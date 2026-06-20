@@ -5,241 +5,564 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Morpheus — Execution Intelligence</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
     html { scroll-behavior: smooth; }
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: #07070d;
-      color: #e0e0f0;
+      background: #05050f;
+      color: #e2e8f0;
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
     }
 
-    .bg-glow {
+    ::selection { background: rgba(6, 182, 212, 0.3); color: #fff; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #05050f; }
+    ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 3px; }
+
+    /* --- Grid Background --- */
+    .bg-grid {
       position: fixed;
-      top: -40vh;
-      left: -20vw;
-      width: 80vw;
-      height: 80vh;
-      background: radial-gradient(circle at 30% 40%, rgba(100, 40, 255, 0.12), transparent 70%);
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(6, 182, 212, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(6, 182, 212, 0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .bg-glow-1 {
+      position: fixed;
+      top: -30vh;
+      right: -10vw;
+      width: 70vw;
+      height: 70vh;
+      background: radial-gradient(circle at center, rgba(6, 182, 212, 0.10), transparent 65%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .bg-glow-2 {
+      position: fixed;
+      bottom: -20vh;
+      left: -10vw;
+      width: 60vw;
+      height: 60vh;
+      background: radial-gradient(circle at center, rgba(20, 184, 166, 0.08), transparent 65%);
       pointer-events: none;
       z-index: 0;
     }
 
     .container {
-      max-width: 1100px;
+      max-width: 1120px;
       margin: 0 auto;
       padding: 0 24px;
       position: relative;
       z-index: 1;
     }
 
+    /* --- Nav --- */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      backdrop-filter: blur(20px) saturate(1.5);
+      -webkit-backdrop-filter: blur(20px) saturate(1.5);
+      background: rgba(5, 5, 15, 0.7);
+      border-bottom: 1px solid rgba(6, 182, 212, 0.06);
+      padding: 0 24px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    nav .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 18px;
+      letter-spacing: -0.03em;
+      color: #f1f5f9;
+      text-decoration: none;
+    }
+    nav .logo svg { width: 28px; height: 28px; }
+    nav .nav-links { display: flex; align-items: center; gap: 24px; }
+    nav .nav-links a {
+      color: #94a3b8;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    nav .nav-links a:hover { color: #e2e8f0; }
+    .nav-btn {
+      background: linear-gradient(135deg, #06b6d4, #0891b2);
+      color: #fff !important;
+      padding: 8px 18px;
+      border-radius: 8px;
+      font-weight: 600 !important;
+      font-size: 13px !important;
+      transition: opacity 0.2s, transform 0.2s !important;
+    }
+    .nav-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+
     /* --- Hero --- */
     .hero {
-      padding: 120px 0 80px;
+      padding: 160px 0 80px;
       text-align: center;
+      position: relative;
     }
 
     .hero-badge {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      background: rgba(100, 40, 255, 0.12);
-      border: 1px solid rgba(100, 40, 255, 0.25);
+      background: rgba(6, 182, 212, 0.08);
+      border: 1px solid rgba(6, 182, 212, 0.15);
       border-radius: 999px;
       padding: 6px 16px;
       font-size: 13px;
-      color: #a78bfa;
+      color: #5eead4;
       font-weight: 500;
       margin-bottom: 32px;
+      animation: fadeUp 0.6s ease both;
     }
-    .hero-badge .dot { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; display: inline-block; }
-    .hero-badge a { color: #c4b5fd; text-decoration: none; }
+    .hero-badge .dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: #22d3ee;
+      display: inline-block;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    .hero-badge a { color: #67e8f9; text-decoration: none; }
     .hero-badge a:hover { text-decoration: underline; }
 
-    .hero h1 {
-      font-size: clamp(44px, 8vw, 80px);
-      font-weight: 800;
-      letter-spacing: -0.04em;
-      line-height: 1.05;
-      margin-bottom: 20px;
+    @keyframes pulse {
+      0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(6, 182, 212, 0.4); }
+      50% { opacity: 0.7; box-shadow: 0 0 0 6px rgba(6, 182, 212, 0); }
     }
-    .hero h1 .gradient {
-      background: linear-gradient(135deg, #a78bfa, #6366f1, #8b5cf6);
+
+    .hero h1 {
+      font-size: clamp(40px, 7vw, 76px);
+      font-weight: 900;
+      letter-spacing: -0.05em;
+      line-height: 1.05;
+      margin-bottom: 8px;
+      animation: fadeUp 0.6s 0.1s ease both;
+    }
+    .hero h1 .grad-cyan {
+      background: linear-gradient(135deg, #22d3ee, #06b6d4, #0891b2);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
-
-    .hero p {
+    .hero h1 .grad-white {
+      color: #f1f5f9;
+    }
+    .hero .sub {
       font-size: 18px;
-      color: #9494b0;
-      max-width: 600px;
-      margin: 0 auto 40px;
+      color: #64748b;
+      max-width: 540px;
+      margin: 16px auto 36px;
+      animation: fadeUp 0.6s 0.2s ease both;
+    }
+    .hero .sub strong { color: #94a3b8; font-weight: 600; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .install-box {
       display: inline-flex;
       align-items: center;
       gap: 0;
-      background: #12121e;
-      border: 1px solid #2a2a3e;
+      background: #0c0c1a;
+      border: 1px solid rgba(6, 182, 212, 0.15);
       border-radius: 12px;
       overflow: hidden;
       font-family: 'JetBrains Mono', monospace;
       font-size: 15px;
+      animation: fadeUp 0.6s 0.3s ease both;
+      box-shadow: 0 0 40px rgba(6, 182, 212, 0.04);
+      transition: border-color 0.3s, box-shadow 0.3s;
     }
-    .install-box .prompt { padding: 14px 0 14px 18px; color: #6366f1; user-select: none; }
-    .install-box .cmd { padding: 14px 8px; color: #e0e0f0; white-space: nowrap; }
+    .install-box:hover {
+      border-color: rgba(6, 182, 212, 0.3);
+      box-shadow: 0 0 60px rgba(6, 182, 212, 0.08);
+    }
+    .install-box .prompt { padding: 14px 0 14px 18px; color: #22d3ee; user-select: none; }
+    .install-box .cmd { padding: 14px 8px; color: #e2e8f0; white-space: nowrap; }
     .install-box .copy-btn {
-      background: #6366f1;
+      background: linear-gradient(135deg, #06b6d4, #0891b2);
       border: none;
       color: #fff;
-      padding: 14px 20px;
+      padding: 14px 22px;
       cursor: pointer;
       font-size: 14px;
       font-weight: 600;
-      transition: background 0.2s;
+      font-family: 'Inter', sans-serif;
+      transition: opacity 0.2s;
+      letter-spacing: 0.01em;
     }
-    .install-box .copy-btn:hover { background: #4f46e5; }
-    .install-box .copy-btn.copied { background: #22c55e; }
+    .install-box .copy-btn:hover { opacity: 0.85; }
+    .install-box .copy-btn.copied { background: linear-gradient(135deg, #059669, #10b981); }
 
-    .badge-row {
+    .hero-links {
       display: flex;
-      gap: 12px;
+      gap: 16px;
       justify-content: center;
       flex-wrap: wrap;
-      margin-top: 32px;
+      margin-top: 36px;
+      animation: fadeUp 0.6s 0.35s ease both;
     }
-    .badge-row a {
+    .hero-links a {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 8px 16px;
-      background: #12121e;
-      border: 1px solid #2a2a3e;
-      border-radius: 8px;
-      color: #9494b0;
+      padding: 10px 20px;
+      background: rgba(15, 15, 30, 0.6);
+      border: 1px solid rgba(6, 182, 212, 0.08);
+      border-radius: 10px;
+      color: #94a3b8;
       text-decoration: none;
-      font-size: 13px;
-      transition: border-color 0.2s, color 0.2s;
+      font-size: 14px;
+      font-weight: 500;
+      transition: border-color 0.2s, color 0.2s, background 0.2s;
     }
-    .badge-row a:hover { border-color: #6366f1; color: #e0e0f0; }
+    .hero-links a:hover {
+      border-color: rgba(6, 182, 212, 0.25);
+      color: #e2e8f0;
+      background: rgba(6, 182, 212, 0.05);
+    }
+
+    .hero-stars {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      justify-content: center;
+      margin-top: 24px;
+      font-size: 13px;
+      color: #475569;
+      animation: fadeUp 0.6s 0.4s ease both;
+    }
+    .hero-stars a { color: #64748b; text-decoration: none; }
+    .hero-stars a:hover { color: #94a3b8; }
+
+    /* --- Terminal preview --- */
+    .terminal-preview {
+      margin-top: 60px;
+      max-width: 680px;
+      margin-left: auto;
+      margin-right: auto;
+      background: #08081a;
+      border: 1px solid rgba(6, 182, 212, 0.08);
+      border-radius: 14px;
+      overflow: hidden;
+      animation: fadeUp 0.8s 0.5s ease both;
+      box-shadow: 0 0 60px rgba(6, 182, 212, 0.03);
+    }
+    .terminal-preview .term-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 16px;
+      background: rgba(6, 182, 212, 0.03);
+      border-bottom: 1px solid rgba(6, 182, 212, 0.06);
+    }
+    .terminal-preview .term-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+    }
+    .terminal-preview .term-dot:nth-child(1) { background: #ef4444; }
+    .terminal-preview .term-dot:nth-child(2) { background: #eab308; }
+    .terminal-preview .term-dot:nth-child(3) { background: #22c55e; }
+    .terminal-preview .term-title {
+      margin-left: 8px;
+      font-size: 12px;
+      color: #475569;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .terminal-preview .term-body {
+      padding: 20px 24px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      line-height: 1.8;
+      color: #64748b;
+      text-align: left;
+    }
+    .terminal-preview .term-body .cyan { color: #22d3ee; }
+    .terminal-preview .term-body .green { color: #34d399; }
+    .terminal-preview .term-body .dim { color: #334155; }
+    .terminal-preview .term-body .white { color: #cbd5e1; }
+
+    /* --- Section titles --- */
+    .section-title {
+      text-align: center;
+      margin-bottom: 52px;
+    }
+    .section-title h2 {
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 10px;
+    }
+    .section-title h2 .grad-cyan {
+      background: linear-gradient(135deg, #22d3ee, #06b6d4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .section-title p {
+      color: #64748b;
+      font-size: 16px;
+      max-width: 500px;
+      margin: 0 auto;
+    }
 
     /* --- Features --- */
-    .features { padding: 80px 0; }
-    .features h2 {
-      text-align: center;
-      font-size: 32px;
-      font-weight: 700;
-      margin-bottom: 48px;
-    }
-    .grid {
+    .features { padding: 100px 0; }
+
+    .grid-3 {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 20px;
     }
-    .card {
-      background: #0d0d1a;
-      border: 1px solid #1e1e32;
-      border-radius: 16px;
-      padding: 28px;
-      transition: border-color 0.2s, transform 0.2s;
-    }
-    .card:hover { border-color: #6366f1; transform: translateY(-2px); }
-    .card .icon { font-size: 28px; margin-bottom: 12px; }
-    .card h3 { font-size: 17px; font-weight: 600; margin-bottom: 8px; }
-    .card p { font-size: 14px; color: #9494b0; }
 
-    /* --- Quick Start --- */
-    .quickstart { padding: 80px 0; }
-    .quickstart h2 {
-      text-align: center;
-      font-size: 32px;
-      font-weight: 700;
-      margin-bottom: 48px;
+    .card {
+      background: linear-gradient(145deg, rgba(10, 10, 25, 0.9), rgba(6, 6, 18, 0.9));
+      border: 1px solid rgba(6, 182, 212, 0.06);
+      border-radius: 18px;
+      padding: 32px 28px;
+      transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+      position: relative;
+      overflow: hidden;
     }
-    .step {
-      display: flex;
-      gap: 20px;
-      align-items: flex-start;
-      margin-bottom: 28px;
+    .card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 18px;
+      background: radial-gradient(800px circle at var(--mx, 50%) var(--my, 50%), rgba(6, 182, 212, 0.04), transparent 50%);
+      opacity: 0;
+      transition: opacity 0.4s;
+      pointer-events: none;
     }
-    .step-num {
-      flex-shrink: 0;
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
-      background: rgba(100, 40, 255, 0.15);
-      color: #a78bfa;
+    .card:hover::before { opacity: 1; }
+    .card:hover {
+      border-color: rgba(6, 182, 212, 0.2);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+    .card .icon-wrap {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.12), rgba(6, 182, 212, 0.04));
+      border: 1px solid rgba(6, 182, 212, 0.08);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: 700;
-      font-size: 16px;
+      font-size: 20px;
+      margin-bottom: 18px;
     }
-    .step-content { flex: 1; padding-top: 6px; }
-    .step-content h3 { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
-    .step-content p { font-size: 14px; color: #9494b0; margin-bottom: 8px; }
-    .code-snip {
+    .card h3 { font-size: 17px; font-weight: 700; margin-bottom: 8px; color: #f1f5f9; }
+    .card p { font-size: 14px; color: #64748b; line-height: 1.7; }
+    .card .tag {
       display: inline-block;
-      background: #12121e;
-      border: 1px solid #2a2a3e;
-      border-radius: 8px;
-      padding: 10px 16px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 13px;
-      color: #c4b5fd;
+      margin-top: 14px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #22d3ee;
+      background: rgba(6, 182, 212, 0.08);
+      padding: 3px 10px;
+      border-radius: 999px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
     }
 
-    /* --- CTA --- */
-    .cta {
-      text-align: center;
-      padding: 80px 0 120px;
+    /* --- Quick Start --- */
+    .quickstart { padding: 100px 0; }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
     }
-    .cta h2 { font-size: 28px; font-weight: 700; margin-bottom: 12px; }
-    .cta p { color: #9494b0; margin-bottom: 28px; }
+
+    .step-card {
+      background: linear-gradient(145deg, rgba(10, 10, 25, 0.9), rgba(6, 6, 18, 0.9));
+      border: 1px solid rgba(6, 182, 212, 0.06);
+      border-radius: 16px;
+      padding: 28px;
+      position: relative;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .step-card:hover {
+      border-color: rgba(6, 182, 212, 0.15);
+      transform: translateY(-2px);
+    }
+    .step-card .step-num {
+      position: absolute;
+      top: -1px;
+      right: 24px;
+      font-size: 48px;
+      font-weight: 900;
+      color: rgba(6, 182, 212, 0.04);
+      line-height: 1;
+      user-select: none;
+    }
+    .step-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 6px; color: #f1f5f9; }
+    .step-card p { font-size: 13px; color: #64748b; margin-bottom: 16px; }
+    .step-card .code-snip {
+      display: block;
+      background: rgba(6, 182, 212, 0.04);
+      border: 1px solid rgba(6, 182, 212, 0.08);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12.5px;
+      color: #5eead4;
+      overflow-x: auto;
+    }
+
+    /* --- Modes Table --- */
+    .modes { padding: 100px 0; }
+
+    .modes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+    }
+
+    .mode-item {
+      background: rgba(10, 10, 25, 0.6);
+      border: 1px solid rgba(6, 182, 212, 0.06);
+      border-radius: 14px;
+      padding: 24px 20px;
+      text-align: center;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .mode-item:hover { border-color: rgba(6, 182, 212, 0.15); transform: translateY(-2px); }
+    .mode-item .mode-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: #22d3ee;
+      background: rgba(6, 182, 212, 0.08);
+      display: inline-block;
+      padding: 2px 12px;
+      border-radius: 999px;
+      margin-bottom: 12px;
+      letter-spacing: 0.03em;
+    }
+    .mode-item h3 { font-size: 16px; font-weight: 700; margin-bottom: 6px; color: #f1f5f9; }
+    .mode-item p { font-size: 13px; color: #64748b; }
+
+    /* --- CTA --- */
+    .cta-section {
+      text-align: center;
+      padding: 100px 0 120px;
+    }
+    .cta-section h2 {
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 12px;
+    }
+    .cta-section .grad-cyan {
+      background: linear-gradient(135deg, #22d3ee, #06b6d4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .cta-section p { color: #64748b; margin-bottom: 32px; font-size: 16px; }
+    .cta-section .install-box { animation: none; }
 
     /* --- Footer --- */
     footer {
-      text-align: center;
+      border-top: 1px solid rgba(6, 182, 212, 0.05);
       padding: 40px 0;
+      text-align: center;
       font-size: 13px;
-      color: #555;
-      border-top: 1px solid #1a1a2e;
+      color: #334155;
     }
-    footer a { color: #6366f1; text-decoration: none; }
-    footer a:hover { text-decoration: underline; }
+    footer a { color: #64748b; text-decoration: none; transition: color 0.2s; }
+    footer a:hover { color: #22d3ee; }
+    footer .footer-links { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-bottom: 12px; }
 
+    /* --- Reveal animation --- */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* --- Responsive --- */
     @media (max-width: 640px) {
-      .hero { padding: 80px 0 40px; }
+      nav .nav-links { gap: 12px; }
+      nav .nav-links a { font-size: 13px; }
+      .hero { padding: 130px 0 40px; }
       .install-box { font-size: 13px; }
-      .install-box .cmd { padding: 12px 6px; }
-      .install-box .copy-btn { padding: 12px 14px; }
+      .install-box .cmd { padding: 12px 6px; font-size: 12px; }
+      .install-box .copy-btn { padding: 12px 16px; font-size: 13px; }
+      .terminal-preview .term-body { padding: 16px; font-size: 11.5px; }
+      .card { padding: 24px 20px; }
+      .step-card { padding: 24px 20px; }
     }
   </style>
 </head>
 <body>
-  <div class="bg-glow"></div>
+  <div class="bg-grid"></div>
+  <div class="bg-glow-1"></div>
+  <div class="bg-glow-2"></div>
 
+  <!-- Nav -->
+  <nav>
+    <a href="#" class="logo">
+      <svg viewBox="0 0 32 32" fill="none">
+        <rect x="2" y="2" width="28" height="28" rx="8" stroke="#06b6d4" stroke-width="1.5"/>
+        <path d="M10 16h12M10 12h8M10 20h6" stroke="#22d3ee" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="22" cy="22" r="3" fill="#06b6d4" opacity="0.3"/>
+      </svg>
+      morpheus
+    </a>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#quickstart">Quick Start</a>
+      <a href="#modes">Modes</a>
+      <a href="https://github.com/orewamash/morpheus" target="_blank">GitHub</a>
+      <a href="#" class="nav-btn">Get Started</a>
+    </div>
+  </nav>
+
+  <!-- Hero -->
   <section class="hero">
     <div class="container">
       <div class="hero-badge">
         <span class="dot"></span>
-        v0.1.0 &middot; MIT License &middot;
-        <a href="https://github.com/madhesh-y/morpheus">GitHub</a>
+        v0.1.0 &middot; MIT &middot;
+        <a href="https://github.com/orewamash/morpheus" target="_blank">GitHub</a>
       </div>
 
       <h1>
-        Your code ran.<br>
-        <span class="gradient">Morpheus remembers.</span>
+        <span class="grad-white">Your code ran.</span><br>
+        <span class="grad-cyan">Morpheus remembers.</span>
       </h1>
 
-      <p>
-        Every other tool reads what your code says. Morpheus traces what your code <em>did</em>
-        &mdash; every call, return, and variable &mdash; then narrates it back in plain English.
+      <p class="sub">
+        Every other tool reads what your code <strong>says</strong>.
+        Morpheus traces what your code <strong>did</strong> &mdash; every call, return, and variable &mdash;
+        then narrates it back in plain English.
       </p>
 
       <div class="install-box">
@@ -248,109 +571,200 @@
         <button class="copy-btn" onclick="copyInstall(this)">Copy</button>
       </div>
 
-      <div class="badge-row">
-        <a href="#quickstart">Quick Start</a>
-        <a href="https://github.com/madhesh-y/morpheus">GitHub</a>
-        <a href="https://github.com/madhesh-y/morpheus/issues">Report Bug</a>
+      <div class="hero-links">
+        <a href="#quickstart">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          Quick Start
+        </a>
+        <a href="https://github.com/orewamash/morpheus" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          GitHub
+        </a>
+      </div>
+
+      <!-- Terminal preview -->
+      <div class="terminal-preview">
+        <div class="term-header">
+          <span class="term-dot"></span>
+          <span class="term-dot"></span>
+          <span class="term-dot"></span>
+          <span class="term-title">morpheus run examples/simple.py</span>
+        </div>
+        <div class="term-body">
+          <span class="dim">$</span> <span class="cyan">morpheus</span> run examples/simple.py<br>
+          <span class="dim">│</span><br>
+          <span class="dim">│</span> <span class="green">◉</span> Tracing execution of simple.py...<br>
+          <span class="dim">│</span> <span class="white">Captured 12 events. Compressed into 3 chapters.</span><br>
+          <span class="dim">│</span><br>
+          <span class="dim">│</span> <span class="grad-cyan" style="background:linear-gradient(135deg,#22d3ee,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Chapter 1 — calculate()</span><br>
+          <span class="dim">│</span> <span class="white">The `calculate` function was called with a=3, b=4...</span><br>
+          <span class="dim">│</span><br>
+          <span class="dim">└─</span> <span class="green">SUCCESS</span> <span class="dim">— 12 events in 4.23ms</span>
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="features">
+  <!-- Features -->
+  <section class="features" id="features">
     <div class="container">
-      <h2>What Morpheus Does</h2>
-      <div class="grid">
-        <div class="card">
-          <div class="icon">🔍</div>
+      <div class="section-title reveal">
+        <h2>What <span class="grad-cyan">Morpheus</span> Does</h2>
+        <p>Six powerful modes to understand, analyze, and improve your code.</p>
+      </div>
+      <div class="grid-3">
+        <div class="card reveal" onmousemove="this.style.setProperty('--mx', (event.offsetX/this.offsetWidth*100)+'%');this.style.setProperty('--my', (event.offsetY/this.offsetHeight*100)+'%')">
+          <div class="icon-wrap">🔍</div>
           <h3>Execution Tracing</h3>
-          <p>Captures every function call, return value, and variable with sys.settrace &mdash; no code modification needed.</p>
+          <p>Captures every function call, return value, and local variable using Python's <code style="color:#5eead4;font-size:12px;">sys.settrace</code> — zero code modification required.</p>
+          <span class="tag">Core Engine</span>
         </div>
-        <div class="card">
-          <div class="icon">📖</div>
+        <div class="card reveal" onmousemove="this.style.setProperty('--mx', (event.offsetX/this.offsetWidth*100)+'%');this.style.setProperty('--my', (event.offsetY/this.offsetHeight*100)+'%')">
+          <div class="icon-wrap">📖</div>
           <h3>AI Narration</h3>
-          <p>Uses a local Ollama LLM (or cloud OpenRouter) to narrate execution flow in natural English.</p>
+          <p>Uses a local Ollama LLM (or cloud OpenRouter) to narrate your execution flow in natural, readable English — like a senior dev walking through the code.</p>
+          <span class="tag">Default Mode</span>
         </div>
-        <div class="card">
-          <div class="icon">⚠️</div>
+        <div class="card reveal" onmousemove="this.style.setProperty('--mx', (event.offsetX/this.offsetWidth*100)+'%');this.style.setProperty('--my', (event.offsetY/this.offsetHeight*100)+'%')">
+          <div class="icon-wrap">⚠️</div>
           <h3>Prophecy Mode</h3>
-          <p>Detects rapid repeated calls, missing return values, and other execution warnings before they become bugs.</p>
+          <p>Proactively detects rapid repeated calls, missing return values, and anomalous patterns — catching bugs before they happen.</p>
+          <span class="tag">Predictive</span>
         </div>
-        <div class="card">
-          <div class="icon">🔒</div>
+        <div class="card reveal" onmousemove="this.style.setProperty('--mx', (event.offsetX/this.offsetWidth*100)+'%');this.style.setProperty('--my', (event.offsetY/this.offsetHeight*100)+'%')">
+          <div class="icon-wrap">🔒</div>
           <h3>Spy Mode</h3>
-          <p>Security-scan unknown scripts for dangerous behavior &mdash; file access, network calls, system commands.</p>
+          <p>Security-scan unknown scripts for dangerous behavior — file access, network calls, and system commands — before you run them.</p>
+          <span class="tag">Security</span>
         </div>
-        <div class="card">
-          <div class="icon">🧠</div>
+        <div class="card reveal" onmousemove="this.style.setProperty('--mx', (event.offsetX/this.offsetWidth*100)+'%');this.style.setProperty('--my', (event.offsetY/this.offsetHeight*100)+'%')">
+          <div class="icon-wrap">🧠</div>
           <h3>Oracle Mode</h3>
-          <p>Multi-language support (Python, JS, C++, Java) with personality-driven analysis: mentor, critic, paranoid, teacher.</p>
+          <p>Multi-language support (Python, JS, C++, Java) with four personalities: <strong style="color:#94a3b8;">mentor</strong>, <strong style="color:#94a3b8;">critic</strong>, <strong style="color:#94a3b8;">paranoid</strong>, <strong style="color:#94a3b8;">teacher</strong>.</p>
+          <span class="tag">Multi-Lang</span>
         </div>
-        <div class="card">
-          <div class="icon">📊</div>
+        <div class="card reveal" onmousemove="this.style.setProperty('--mx', (event.offsetX/this.offsetWidth*100)+'%');this.style.setProperty('--my', (event.offsetY/this.offsetHeight*100)+'%')">
+          <div class="icon-wrap">📊</div>
           <h3>ML Pipeline</h3>
-          <p>Anomaly detection, crash prediction, execution fingerprints, performance degradation tracking, and GAT models.</p>
+          <p>Anomaly detection (Isolation Forest), crash prediction (Random Forest), execution fingerprints, performance degradation, and GAT models.</p>
+          <span class="tag">Advanced</span>
         </div>
       </div>
     </div>
   </section>
 
+  <!-- Quick Start -->
   <section class="quickstart" id="quickstart">
     <div class="container">
-      <h2>Get Started in 30 Seconds</h2>
-
-      <div class="step">
-        <div class="step-num">1</div>
-        <div class="step-content">
+      <div class="section-title reveal">
+        <h2>Get Started in <span class="grad-cyan">30 Seconds</span></h2>
+        <p>Four steps from zero to your first execution narration.</p>
+      </div>
+      <div class="steps-grid">
+        <div class="step-card reveal">
+          <div class="step-num">01</div>
           <h3>Install Morpheus</h3>
-          <p>Requires Python 3.11+ and Ollama (free, local LLM).</p>
+          <p>Requires Python 3.11+. Optionally install ML extras.</p>
           <div class="code-snip">pip install morpheus-cli</div>
         </div>
-      </div>
-
-      <div class="step">
-        <div class="step-num">2</div>
-        <div class="step-content">
-          <h3>Install &amp; start Ollama</h3>
-          <p>Download from <a href="https://ollama.com" style="color:#a78bfa;">ollama.com</a>, then pull a model.</p>
+        <div class="step-card reveal">
+          <div class="step-num">02</div>
+          <h3>Start Ollama</h3>
+          <p>Download from <a href="https://ollama.com" style="color:#22d3ee;text-decoration:none;">ollama.com</a>, then pull a model.</p>
           <div class="code-snip">ollama pull mistral</div>
         </div>
-      </div>
-
-      <div class="step">
-        <div class="step-num">3</div>
-        <div class="step-content">
-          <h3>Trace any Python file</h3>
-          <p>Morpheus runs your script, captures every event, and narrates it.</p>
+        <div class="step-card reveal">
+          <div class="step-num">03</div>
+          <h3>Run your first trace</h3>
+          <p>Morpheus runs the script and narrates everything.</p>
           <div class="code-snip">morpheus run examples/simple.py</div>
         </div>
-      </div>
-
-      <div class="step">
-        <div class="step-num">4</div>
-        <div class="step-content">
-          <h3>Explore more modes</h3>
-          <p>Security scan, crash prediction, teaching mode, and interactive mind maps.</p>
-          <div class="code-snip">morpheus spy script.py &nbsp;// morpheus run script.py -m prophecy</div>
+        <div class="step-card reveal">
+          <div class="step-num">04</div>
+          <h3>Explore the modes</h3>
+          <p>Security scan, teach mode, oracle, mind maps, and ML analysis.</p>
+          <div class="code-snip">morpheus spy script.py</div>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="cta">
+  <!-- Modes -->
+  <section class="modes" id="modes">
     <div class="container">
-      <h2>Ready to see what your code really did?</h2>
-      <p>Open source &middot; MIT licensed &middot; Runs 100% locally</p>
-      <div class="install-box" style="margin: 0 auto;">
-        <span class="prompt">$</span>
-        <span class="cmd">pip install morpheus-cli</span>
-        <button class="copy-btn" onclick="copyInstall(this)">Copy</button>
+      <div class="section-title reveal">
+        <h2>Every <span class="grad-cyan">Mode</span> Explained</h2>
+        <p>Morpheus has a mode for every workflow.</p>
+      </div>
+      <div class="modes-grid">
+        <div class="mode-item reveal">
+          <div class="mode-label">run</div>
+          <h3>Narrator</h3>
+          <p>LLM narrates each execution chapter in plain English</p>
+        </div>
+        <div class="mode-item reveal">
+          <div class="mode-label">run -m prophecy</div>
+          <h3>Prophecy</h3>
+          <p>Detects rapid calls, missing returns, and execution warnings</p>
+        </div>
+        <div class="mode-item reveal">
+          <div class="mode-label">run -m teach</div>
+          <h3>Teach</h3>
+          <p>Interactive Q&A session about the code execution</p>
+        </div>
+        <div class="mode-item reveal">
+          <div class="mode-label">run -m oracle</div>
+          <h3>Oracle</h3>
+          <p>Multi-language + personality-driven analysis</p>
+        </div>
+        <div class="mode-item reveal">
+          <div class="mode-label">spy</div>
+          <h3>Spy</h3>
+          <p>Security scan unknown scripts for dangerous behavior</p>
+        </div>
+        <div class="mode-item reveal">
+          <div class="mode-label">map</div>
+          <h3>Mind Map</h3>
+          <p>Interactive execution graph visualization dashboard</p>
+        </div>
+        <div class="mode-item reveal">
+          <div class="mode-label">analyze</div>
+          <h3>ML Analyze</h3>
+          <p>Full ML pipeline on saved runs — anomalies, degradation, profiles</p>
+        </div>
+        <div class="mode-item reveal">
+          <div class="mode-label">diff</div>
+          <h3>Time Diff</h3>
+          <p>Compare two runs and see where execution diverged</p>
+        </div>
       </div>
     </div>
   </section>
 
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="container">
+      <div class="reveal">
+        <h2>Ready to see what your code <span class="grad-cyan">really did</span>?</h2>
+        <p>Open source &middot; MIT License &middot; Runs 100% locally on your machine</p>
+        <div class="install-box">
+          <span class="prompt">$</span>
+          <span class="cmd">pip install morpheus-cli</span>
+          <button class="copy-btn" onclick="copyInstall(this)">Copy</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
   <footer>
     <div class="container">
-      <p>Built by <a href="https://github.com/madhesh-y">Madhesh Y</a> &middot; <a href="https://github.com/madhesh-y/morpheus">GitHub</a> &middot; <a href="https://github.com/madhesh-y/morpheus/issues">Issues</a></p>
+      <div class="footer-links">
+        <a href="https://github.com/orewamash/morpheus" target="_blank">GitHub</a>
+        <a href="https://github.com/orewamash/morpheus/issues" target="_blank">Issues</a>
+        <a href="https://pypi.org/project/morpheus-cli/" target="_blank">PyPI</a>
+      </div>
+      <p>Built by <a href="https://github.com/orewamash" target="_blank">Orewamash</a> &middot; &copy; 2026</p>
     </div>
   </footer>
 
@@ -366,6 +780,16 @@
         }, 2000);
       });
     }
+
+    const revealEls = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    revealEls.forEach(el => observer.observe(el));
   </script>
 </body>
 </html>
