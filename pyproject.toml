@@ -1,0 +1,88 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "morpheus-cli"
+version = "0.1.0"
+description = "A self-evolving execution intelligence system. Every other tool reads what your code says. Morpheus remembers what your code did."
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.11"
+authors = [
+  { name = "Madhesh Y", email = "madhesh.y@saveetha.com" }
+]
+keywords = ["cli", "debugging", "execution", "narration", "ai", "developer-tools"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Software Development :: Debuggers",
+  "Topic :: Utilities",
+]
+
+dependencies = [
+  "typer>=0.9.0",
+  "rich>=13.0.0",
+  "httpx>=0.25.0",
+  "scikit-learn>=1.3.0",
+  "networkx>=3.2.0",
+  "websockets>=12.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=7.4.0",
+  "pytest-cov>=4.1.0",
+  "pytest-mock>=3.12.0",
+  "black>=23.0.0",
+  "ruff>=0.1.0",
+  "mypy>=1.6.0",
+]
+api = [
+  "fastapi>=0.104.0",
+  "uvicorn>=0.24.0",
+]
+ml = [
+  "xgboost>=2.0.0",
+  "scikit-learn>=1.3.0",
+  "networkx>=3.2.0",
+  "hdbscan>=0.8.33",
+  "torch>=2.0.0",
+  "torch-geometric>=2.4.0",
+]
+oracle = [
+  "libcst>=1.1.0",
+  "tree-sitter>=0.20.0",
+  "tree-sitter-python>=0.20.0",
+  "tree-sitter-javascript>=0.20.0",
+  "websockets>=12.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/madhesh-y/morpheus"
+Repository = "https://github.com/madhesh-y/morpheus"
+"Bug Tracker" = "https://github.com/madhesh-y/morpheus/issues"
+Changelog = "https://github.com/madhesh-y/morpheus/releases"
+
+[project.scripts]
+morpheus = "morpheus.cli:app"
+
+[tool.hatch.build.targets.wheel]
+packages = ["morpheus"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_functions = ["test_*"]
+
+[tool.black]
+line-length = 88
+target-version = ["py311"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py311"
