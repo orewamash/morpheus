@@ -63,10 +63,10 @@ oracle = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/madhesh-y/morpheus"
-Repository = "https://github.com/madhesh-y/morpheus"
-"Bug Tracker" = "https://github.com/madhesh-y/morpheus/issues"
-Changelog = "https://github.com/madhesh-y/morpheus/releases"
+Homepage = "https://github.com/orewamash/morpheus"
+Repository = "https://github.com/orewamash/morpheus"
+"Bug Tracker" = "https://github.com/orewamash/morpheus/issues"
+Changelog = "https://github.com/orewamash/morpheus/releases"
 
 [project.scripts]
 morpheus = "morpheus.cli:app"
